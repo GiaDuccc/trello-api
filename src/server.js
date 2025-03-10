@@ -11,4 +11,4 @@ app.get('/', function (req, res) {
 
 app.listen(port, hostName, () => {
   console.log(`running http://${hostName}:${port}/`);
-});
+})
