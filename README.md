@@ -36,14 +36,20 @@
     "node": ">=18.x"
   },
   "scripts": {
-    "lint": "eslint src --ext js --report-unused-disable-directives --max-warnings 0",
+    "lint":"eslint src --ext js--report-unused-disable-directives--max-warnings 0",
     // src --ext js: trỏ đến folder src rồi vào file js
-    // --report-unused-disable-directives --max-warnings 0: Dùng để trả về lỗi, nếu có 10 lỗi sẽ trả về 10 lỗi - i guess =))
+    // --report-unused-disable-directives --max-warnings 0: Dùng để trả về lỗi, nếu có 10 lỗi sẽ trả về 10 lỗi - i guess =)
     "clean": "rm -rf build && mkdir build",
+    -> dùng để xoá dữ liệu trong thư mục build
     "build-babel": "babel ./src -d ./build/src",
+    -> Thường dùng để build ra bản latest (production), không đẩy lên github
     "build": "npm run clean && npm run build-babel",
+    -> Gộp 2 lệnh là clean và build-babel
     "production": "npm run build && node ./build/src/server.js",
-    "dev": "nodemon --exec babel-node ./src/server.js"
+    -> Là bản sau khi đã lint rồi dùng để deploy
+    "dev": "nodemon --exec babel-node ./src/server.js"  
+    // giống với npm start
+    // --exec babel-node: thực thi gói bable-node vào gói ./src/server.js
   },
   "dependencies": {
     "@babel/runtime": "^7.22.10",
@@ -62,3 +68,31 @@
   }
 }
 ### ---- package-json.note ----end-----
+
+
+### ---- .Babelrc.note ----start-----
+Để chạy được mấy cái sript có bable thì cần phải có cái babelrc này
+{
+  "presets": ["@babel/preset-env"], -> sử dụng gói presets env - build code chuẩn
+  "plugins": [
+    ["@babel/transform-runtime"],
+    ["module-resolver", { "alias": { "~": "./src" } }]
+    -> Xử lý relative import và absolute import
+  ]
+}
+
+### ---- .Babelrc.note ----end-----
+
+
+### ---- .Jsconfig.json.note ----start-----
+-Cần phải có cái này thì mới có thể ctrl + click để đi đến thành phần đang trỏ đến hoặc url khi import 1 cái gì đó
+-Dành riêng cho VS Code
+{
+  "compilerOptions": {
+    "paths": {
+      "~/*": ["./src/*"],
+    },
+  }
+}
+### ---- .Jsconfig.json.note ----end-----
+
