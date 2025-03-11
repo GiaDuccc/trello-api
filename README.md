@@ -23,7 +23,7 @@
 * "@babel/plugin-transform-runtime": "^7.22.10"
 * "@babel/preset-env": "^7.22.10"
 * "babel-plugin-module-resolver": "^5.0.0"
-``
+```
 
 ### ---- Package-json.note ----start-----
 {
@@ -61,4 +61,4 @@
     "nodemon": "^3.0.1"
   }
 }
----- package-json.note ----end-----
+### ---- package-json.note ----end-----
