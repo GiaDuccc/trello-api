@@ -25,7 +25,7 @@
 * "babel-plugin-module-resolver": "^5.0.0"
 ``
 
----- package-json.note ----start-----
+### ---- Package-json.note ----start-----
 {
   "name": "nodejs-expressjs-mongodb-base-project",
   "private": true,
