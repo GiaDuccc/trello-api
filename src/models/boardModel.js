@@ -45,11 +45,22 @@ const findOnebyId = async (id) => {
     throw new Error(error);
   }
 }
+// Queru tổng hợp (aggregate) để lấy toàn bộ Columns và Cards thuộc về Board
+const getDetails = async (id) => {
+  try {
+    return await GET_DB().collection(BOARD_COLLECTION_NAME).findOne({
+      _id: new ObjectId(id)
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+}
 
 export const boardModel = {
   BOARD_COLLECTION_NAME,
   BOARD_COLLECTION_SCHEMA,
   createNew,
-  findOnebyId
+  findOnebyId,
+  getDetails
 };
 

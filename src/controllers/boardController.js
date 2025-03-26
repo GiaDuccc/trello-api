@@ -25,6 +25,29 @@ const createNew = async (req, res, next) => {
   }
 }
 
+const getDetails = async (req, res, next) => {
+  try {
+    // console.log('req.params: ', req.params);
+    const boardId = req.params.id
+
+    // Sau học khoá MERN Stack Advance nâng cao học trực tiếp sẽ có thêm userId nữa để chỉ lấy board thuộc về user đó thôi ...
+
+    // Điều hướng dữ liệu sang tầng Service
+    const board = await boardService.getDetails(boardId);
+
+    // Có kết quả thì trả về phía Client
+    res.status(StatusCodes.OK).json(board);
+  } catch (error) {
+    next(error);
+    /**
+      - Tác dụng của next(error):
+      Khi có lỗi, bất kì lỗi nào đều sẽ chạy cái middleware xử lí lỗi tập trung
+      ở file server.js
+    */
+  }
+}
+
 export const boardController = {
-  createNew
+  createNew,
+  getDetails
 };
