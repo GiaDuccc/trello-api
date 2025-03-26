@@ -1,4 +1,6 @@
 import express from 'express'; // Load Express để chạy server
+import cors from 'cors'
+import { corsOptions } from '~/config/cors'
 import exitHook from 'async-exit-hook'; // Load async-exit-hook để sử dụng exitHook
 import { CONNECT_DB, CLOSE_DB } from '~/config/mongodb'; // Load Database từ mongodb.js
 import { env } from '~/config/environment'; //Load env từ file environment để sử dụng các biến môi trường
@@ -10,6 +12,9 @@ const START_SERVER = () => {
 
   // Enable req.body json data
   app.use(express.json());
+
+  // Xử lí CORS
+  app.use(cors(corsOptions))
 
   // Use APIs v1
   app.use('/v1', APIs_V1) // Sử dụng APIs_V1 cho cái (trang chủ)/v1
