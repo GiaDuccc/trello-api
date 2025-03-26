@@ -48,9 +48,10 @@ const findOnebyId = async (id) => {
 // Queru tổng hợp (aggregate) để lấy toàn bộ Columns và Cards thuộc về Board
 const getDetails = async (id) => {
   try {
-    return await GET_DB().collection(BOARD_COLLECTION_NAME).findOne({
+    const result = await GET_DB().collection(BOARD_COLLECTION_NAME).findOne({
       _id: new ObjectId(id)
     });
+    return result
   } catch (error) {
     throw new Error(error);
   }
