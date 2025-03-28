@@ -75,7 +75,7 @@ const getDetails = async (id) => {
       } }
     ]).toArray()
     // vì id là unique nên mảng trả về chỉ có 1 phần tử nên return result[0]
-    return result[0] || {}
+    return result[0] || null
   } catch (error) {
     throw new Error(error);
   }
