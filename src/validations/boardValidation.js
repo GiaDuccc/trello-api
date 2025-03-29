@@ -2,6 +2,7 @@ import Joi from 'joi';
 import { StatusCodes } from 'http-status-codes'; //Load Status ở thư viện http-status-codes
 import ApiError from '~/utils/ApiError';
 import { BOARD_TYPES } from '~/utils/constants';
+import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from '~/utils/validators'
 
 const createNew = async (req, res, next) => {
   /**
@@ -51,6 +52,40 @@ const createNew = async (req, res, next) => {
   }
 };
 
+const update = async (req, res, next) => {
+  // Lưu ý không require trong trường hợp update
+  const correctCondition = Joi.object({
+    title: Joi.string().min(3).max(50).trim().strict(),
+    // Nếu không có strict() thì sẽ bắt lỗi khi chạy đến try catch, có strict() thì sẽ bắt lõi luôn
+    description: Joi.string().min(3).max(256).trim().strict(),
+    type: Joi.string().valid(BOARD_TYPES.PUBLIC, BOARD_TYPES.PRIVATE),
+    columnOrderIds: Joi.array().items(
+      Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE)
+    ).default([])
+  });
+
+  try {
+    // Chỉ định abortEarly: false để trường hợp có nhiều lỗi validation sẽ trả về tất cả lỗi
+    // Đối với trường hợp update, cho phép Unknown để không cần đẩy một số field lên
+    await correctCondition.validateAsync(req.body, {
+      abortEarly: false,
+      allowUnknown: true
+    });
+
+    next();
+    /* Công dụng của hàm next():
+      .post(boardValidation.createNew, boardController.createNew);
+      Ở trong hàm post ở file boardRoute sau khi gọi xong boardValidate hợp lệ thì
+      hàm next() sẽ next đến boardController
+    */
+  } catch (error) {
+    const errorMessage = new Error(error).message;
+    const customError = new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, errorMessage);
+    next(customError);
+  }
+};
+
 export const boardValidation = {
-  createNew
+  createNew,
+  update
 };
